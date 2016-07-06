@@ -1,0 +1,19 @@
+#!/bin/bash
+## This line is a comment, the following lines are for Moab
+#MOAB -l nodes=1:ppn=20
+#MOAB -l walltime=168:00:00
+#MOAB -N run
+#MOAB -j oe
+
+#MSUB -l advres=b1002
+#MSUB -A b1002
+
+##### These are shell commands. Note that all MSUB commands come first.
+
+
+cd $PBS_O_WORKDIR
+. load_gpu_modules.sh
+ulimit -s unlimited
+
+
+mpirun -np 20 fargo3d2 in/accretion.par >> f.out

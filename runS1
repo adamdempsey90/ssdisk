@@ -1,0 +1,20 @@
+#!/bin/bash
+## This line is a comment, the following lines are for Moab
+#MOAB -l nodes=1:ppn=1:gpus=1
+#MOAB -l walltime=168:00:00
+#MOAB -l partition=quest5
+#MOAB -N sim1
+#MOAB -j oe
+#MSUB -m abe
+#MSUB -A b1011
+
+##### These are shell commands. Note that all MSUB commands come first.
+
+
+cd $PBS_O_WORKDIR
+. load_gpu_modules.sh
+ulimit -s unlimited
+
+nvidia-smi
+
+./fargo3d_748x1382  -S 0 -o "nx=1382,ny=768,dt=6.28,ninterm=20,ntot=10000,alpha=0.1,outputdir=outputs/fung/sim1/" in/accretion.par >> fS1.out

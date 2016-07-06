@@ -1,0 +1,6 @@
+#!/bin/bash
+CFLAGS="-c -O3 -Wall -Wextra -std=c99 -I/software/FFTW/2.1.5-gcc/include/"
+LFLAGS="-L/software/FFTW/2.1.5-gcc/lib/ -lrfftw -lfftw -lm"
+gcc $CFLAGS main.c -o main.o
+gcc $CFLAGS convolution.c -o convolution.o
+gcc convolution.o main.o $LFLAGS -o test_fftw

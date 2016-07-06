@@ -1,0 +1,41 @@
+#!/bin/bash
+
+CFLAGS="-c -O3 -Wall -Wextra -std=c99 -I/software/FFTW/2.1.5-gcc/include/"
+LFLAGS="-L/software/FFTW/2.1.5-gcc/lib/ -lrfftw -lfftw -lm"
+
+
+if [[ "$@" == "-omp" ]] 
+then
+    CFLAGS=$CFLAGS" -fopenmp"
+    LFLAGS=$LFLAGS" -lgomp"
+fi
+EXECNAME=../run_step_fixed
+
+echo $EXECNAME
+
+gcc $CFLAGS allocate.c -o bin/allocate.o
+gcc $CFLAGS average.c -o bin/average.o
+gcc $CFLAGS boundary.c -o bin/boundary.o
+gcc $CFLAGS cfl.c -o bin/cfl.o
+gcc $CFLAGS artificial_visc.c -o bin/artificial_visc.o
+gcc $CFLAGS disk.c -o bin/disk.o
+gcc $CFLAGS main.c -o bin/main.o
+gcc $CFLAGS input.c -o bin/input.o
+gcc $CFLAGS read_pars.c -o bin/read_pars.o
+gcc $CFLAGS lambda.c -o bin/lambda.o
+gcc $CFLAGS output.c -o bin/output.o
+gcc $CFLAGS planets.c -o bin/planets.o
+gcc $CFLAGS potential.c -o bin/potential.o
+gcc $CFLAGS pressure.c -o bin/pressure.o
+gcc $CFLAGS source_step.c -o bin/source_step.o
+gcc $CFLAGS transport.c -o bin/transport.o
+gcc $CFLAGS update.c -o bin/update.o
+gcc $CFLAGS vanleer.c -o bin/vanleer.o
+gcc $CFLAGS viscosity.c -o bin/viscosity.o
+gcc $CFLAGS stockholm.c -o bin/stockholm.o
+gcc $CFLAGS advection.c -o bin/advection.o
+gcc $CFLAGS ppa.c -o bin/ppa.o
+gcc $CFLAGS compute_vmed.c -o bin/compute_vmed.o
+gcc $CFLAGS convolution.c -o bin/convolution.o
+
+gcc bin/allocate.o bin/average.o bin/boundary.o bin/cfl.o bin/artificial_visc.o bin/disk.o bin/main.o bin/input.o bin/lambda.o bin/output.o bin/planets.o bin/potential.o bin/pressure.o bin/source_step.o  bin/transport.o bin/update.o bin/vanleer.o bin/viscosity.o bin/read_pars.o bin/stockholm.o bin/ppa.o bin/advection.o bin/compute_vmed.o bin/convolution.o $LFLAGS -o $EXECNAME
