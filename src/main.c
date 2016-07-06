@@ -15,6 +15,7 @@ real dtemp = 0.0;
 int main(int argc, char *argv[]) {
   
   int   i, OutputNumber = 0, d;
+  int   ni;
   char  ParameterFile[MAXLINELENGTH];
   if (argc == 1) PrintUsage (argv[0]);
   strcpy (ParameterFile, "");
@@ -291,54 +292,62 @@ OMEGAFRAME (which is used afterwards to build the initial Vx field. */
     clock_t begin_timer_time, end_timer_time;
     real timer_time_elapsed;
 #endif
-  for (i = begin_i; i<=NTOT; i++) { // MAIN LOOP
-#ifdef TIMER
-    if (i==begin_i) {
-        begin_timer_time = clock();
-    }
-#endif
-    if (NINTERM * (TimeStep = (i / NINTERM)) == i) {
+  for (ni = 0; ni<NITER; ni++) { // Iteration loop
+      masterprintf("Start of %d iteration\n", ni);
+      for (i = begin_i; i<=NTOT; i++) { // MAIN LOOP
+    #ifdef TIMER
+        if (i==begin_i) {
+            begin_timer_time = clock();
+        }
+    #endif
+        if (NINTERM * (TimeStep = (i / NINTERM)) == i) {
 
-#if defined(MHD) && defined(DEBUG)
-      FARGO_SAFE(ComputeDivergence(Bx, By, Bz));
-#endif
-      if (ThereArePlanets)
-	WritePlanetSystemFile(TimeStep, NO);
-      
-#ifndef NOOUTPUTS
-      WriteOutputsAndDisplay(ALL);
+    #if defined(MHD) && defined(DEBUG)
+          FARGO_SAFE(ComputeDivergence(Bx, By, Bz));
+    #endif
+          if (ThereArePlanets)
+        WritePlanetSystemFile(TimeStep, NO);
+          
+    #ifndef NOOUTPUTS
+          WriteOutputsAndDisplay(ALL);
 
 
-      if(CPU_Master) printf("OUTPUTS %d at date t = %f OK\n", TimeStep, PhysicalTime);
-#endif
+          if(CPU_Master) printf("OUTPUTS %d at date t = %f OK\n", TimeStep, PhysicalTime);
+    #endif
 
-      if (TimeInfo == YES)
-	GiveTimeInfo (TimeStep);
-    }
+          if (TimeInfo == YES)
+        GiveTimeInfo (TimeStep);
+        }
 
-    if (NSNAP != 0) {
-      if (NSNAP * (TimeStep = (i / NSNAP)) == i) {
-	WriteOutputsAndDisplay(SPECIFIC);
+        if (NSNAP != 0) {
+          if (NSNAP * (TimeStep = (i / NSNAP)) == i) {
+        WriteOutputsAndDisplay(SPECIFIC);
+          }
+        }
+        
+        AlgoGas();
+        MonitorGlobal (MONITOR2D      | MONITORY | MONITORY_RAW|	\
+               MONITORSCALAR  | MONITORZ | MONITORZ_RAW);
+        
+        if (ThereArePlanets) {
+          WriteTorqueAndWork(TimeStep, 0);
+          WritePlanetSystemFile(TimeStep, YES);
+          SolveOrbits (Sys);
+        }
+    #ifdef TIMER
+        if (i==begin_i) {
+            end_timer_time = clock();
+            timer_time_elapsed =( (double)(end_timer_time-begin_timer_time))/CLOCKS_PER_SEC;
+            masterprint("time for time_step was %g s\n",timer_time_elapsed);
+        }
+    #endif
+
       }
-    }
-    
-    AlgoGas();
-    MonitorGlobal (MONITOR2D      | MONITORY | MONITORY_RAW|	\
-		   MONITORSCALAR  | MONITORZ | MONITORZ_RAW);
-    
-    if (ThereArePlanets) {
-      WriteTorqueAndWork(TimeStep, 0);
-      WritePlanetSystemFile(TimeStep, YES);
-      SolveOrbits (Sys);
-    }
-#ifdef TIMER
-    if (i==begin_i) {
-        end_timer_time = clock();
-        timer_time_elapsed =( (double)(end_timer_time-begin_timer_time))/CLOCKS_PER_SEC;
-        masterprint("time for time_step was %g s\n",timer_time_elapsed);
-    }
-#endif
-
+      masterprintf("End of %d iteration\n", ni);
+      compute_avgs();
+      compute_steady_state();
+      add_avg();
+      output_steady_state();
   }
 
   MPI_Finalize();  
