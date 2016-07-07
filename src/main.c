@@ -343,6 +343,7 @@ OMEGAFRAME (which is used afterwards to build the initial Vx field. */
     #endif
 
       }
+      AlgoGas_ss();
       masterprintf("End of %d iteration\n", ni);
       compute_avgs();
       compute_steady_state();

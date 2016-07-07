@@ -64,9 +64,8 @@ void AddAvgs_cpu () {
 //<#>
 	ll = l;
     ll2d = l2d;
-    dens[ll] += dens_avg_ss[ll2d] - dens_avg[ll2d];
-    vx[ll] += vx_avg_ss[ll2d] - vx_avg[ll2d];
-    vy[ll] += vy_avg_ss[ll2d] - vy_avg[ll2d];
+    dens[ll] = dens_avg_ss[ll2d];
+    vy[ll] = vy_avg_ss[ll2d];
 //<\#>
 #ifdef X
       }
