@@ -21,28 +21,28 @@ WKZIN           0.05
 WKZOUT          0.2
 ### Planet parameters
 
-PlanetConfig		planets/jupiter.cfg
+PlanetConfig		planets/jupiter_star.cfg
 ThicknessSmoothing 	0.6
 RocheSmoothing 		0.0
 Eccentricity		0.0
 ExcludeHill	        Yes
 IndirectTerm		No
-MassTaper           0.0
+MassTaper           3
 
 ### Mesh parameters
 
-Nx  200			Azimuthal number of zones
-Ny     100          	Radial number of zones
+Nx  400			Azimuthal number of zones
+Ny     200          	Radial number of zones
 Xmin			-3.14159265358979323844
 Xmax			3.14159265358979323844
-Ymin			0.4    	Inner boundary radius
-Ymax			2.0		Outer boundary radius
+Ymin			0.2    	Inner boundary radius
+Ymax			5.0		Outer boundary radius
 Frame			C
 Spacing 		LOG
 ### Output control parameters
 
 Ntot		1000		Total number of time steps
-Ninterm	 		20		Time steps between outputs
+Ninterm	 		1		Time steps between outputs
 DT			6.28	Time step length. 2PI = 1 orbit
 DTITER      0.1
 NITER       10

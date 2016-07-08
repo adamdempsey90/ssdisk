@@ -60,6 +60,10 @@ void AlgoGas (int steadystate) {
   int var=0;
 
   if (steadystate) {
+      masterprint("Called with ss\n");
+}
+
+  if (steadystate) {
       start_Ld_avg();
   }
   while(dtemp<dtloop) { // DT LOOP    
@@ -100,6 +104,7 @@ void AlgoGas (int steadystate) {
     FARGO_SAFE(cfl());
     dt = step_time; //cfl works with the 'step_time' global variable.
     /// BEFORE AND AFTER THE CALL TO CFL.
+    masterprint("Time step is %lg\n",dt);
     dtemp+=dt;
     if(dtemp>dtloop)  dt = dtloop - (dtemp-dt); // updating dt
 
@@ -216,6 +221,7 @@ void AlgoGas (int steadystate) {
     }
     if (ForwardOneStep == YES) prs_exit(EXIT_SUCCESS);
     PhysicalTime+=dt;
+    masterprint("Time is %lg\n",PhysicalTime);
     FullArrayComms = 0;
     ContourComms = 0;
 #ifdef MHD
