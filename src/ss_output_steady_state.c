@@ -12,7 +12,7 @@ void output_steady_state(int i) {
     real *vx_ss= VxSS->field_cpu;
 
 
-    sprintf(fname,"ss_fluxes%d.dat",i);
+    sprintf(fname,"%sss_fluxes%d.dat",OUTPUTDIR,i);
 
     f = fopen(fname,"w");
 

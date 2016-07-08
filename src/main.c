@@ -350,6 +350,7 @@ OMEGAFRAME (which is used afterwards to build the initial Vx field. */
       compute_steady_state();
       output_steady_state(ni);
       add_avgs();
+      clear_averages();
   }
 
   MPI_Finalize();  

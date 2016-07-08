@@ -578,6 +578,7 @@ ex void compute_steady_state(void);
 ex void output_steady_state(int);
 ex void take_average(real);
 ex void viscous_flux(real);
+ex void clear_averages(void);
     
 
 
