@@ -134,12 +134,12 @@ void write_vtk_scalar(FILE *ofile, Field *f) {
 #endif
 }
 
-void WriteVTK(Field *f, int n) {
+void WriteVTK(Field *f, int n,int ni) {
   int i,j,k;
   char filename[MAXLINELENGTH];
   FILE *ofile;
   INPUT (f);
-  sprintf(filename, "%s%s%d_%d.vtk", OUTPUTDIR, f->name, n, CPU_Rank);
+  sprintf(filename, "%s%s%d_%d_%d.vtk", OUTPUTDIR, f->name, ni,n, CPU_Rank);
   ofile = fopen(filename,"w");
   
   write_vtk_header(ofile, f, n);

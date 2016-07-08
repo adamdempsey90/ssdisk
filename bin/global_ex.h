@@ -36,6 +36,7 @@ extern char NewOutputdir[1024];
 extern char DefaultOut[1024];
 extern char DeviceFile[1024];
 extern int TimeStep;
+extern int TimeStepIter;
 extern int FullArrayComms;
 extern int ContourComms;
 extern int DeviceManualSelection;

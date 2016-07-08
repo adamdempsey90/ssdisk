@@ -296,20 +296,20 @@ ex void RestartPlanetarySystem (int, PlanetarySystem *);
 
 ex void WriteDim(void);
 
-ex void WriteField(Field*, int);
+ex void WriteField(Field*, int,int);
 ex void WriteField_vector(Field*, int);
-ex void WriteMerging(Field*, int);
-ex void WriteMerging1(Field*, int);
+ex void WriteMerging(Field*, int,int);
+ex void WriteMerging1(Field*, int,int);
 
 ex void WriteFieldInt2D(FieldInt2D*, int);
 ex void WriteField2D(Field2D*, int);
-ex void WriteFieldGhost(Field*, int);
+ex void WriteFieldGhost(Field*, int,int);
 ex void WriteBinFile(int, int, int, real*, char*);
 ex void WriteOutputsAndDisplay(int);
-ex void DumpAllFields (int);
+ex void DumpAllFields (int,int);
 
-ex void WriteVTK(Field *, int);
-ex void WriteVTKMerging(Field *, int);
+ex void WriteVTK(Field *, int,int);
+ex void WriteVTKMerging(Field *, int,int);
 
 ex void write_vtk_header(FILE*, Field*, int);
 ex void write_vtk_coordinates(FILE*, Field*);

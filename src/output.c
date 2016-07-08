@@ -263,12 +263,12 @@ void WriteFieldInt2D(FieldInt2D *f, int n) {
   fclose(fo);
 }
 
-void WriteField(Field *f, int n) {
+void WriteField(Field *f, int n,int ni) {
   int i,j,k;
   char filename[200];
   FILE *fo;
   INPUT (f);
-  sprintf(filename, "%s%s%d_%d.dat", OUTPUTDIR, f->name, n, CPU_Rank);
+  sprintf(filename, "%s%s%d_%d_%d.dat", OUTPUTDIR, f->name, ni, n, CPU_Rank);
   fo = fopen(filename,"w");
   for (k=NGHZ; k<Nz+NGHZ; k++) { //Write grid without ghost cells
     for (j=NGHY; j<Ny+NGHY; j++) {
@@ -278,12 +278,12 @@ void WriteField(Field *f, int n) {
   fclose(fo);
 }
 
-void WriteFieldGhost(Field *f, int n) { // Diagnostic function
+void WriteFieldGhost(Field *f, int n,int ni) { // Diagnostic function
   int i,j,k;
   char filename[200];
   FILE *fo;
   INPUT (f);
-  sprintf(filename, "%s%s%d_%d.dat", OUTPUTDIR, f->name, n, CPU_Rank);
+  sprintf(filename, "%s%s%d_%d_%d.dat", OUTPUTDIR, f->name, ni, n, CPU_Rank);
   fo = fopen(filename,"w");
   for (k=0; k<Nz+2*NGHZ; k++) { //Write grid with ghost cells
     for (j=0; j<Ny+2*NGHY; j++) {
@@ -293,7 +293,7 @@ void WriteFieldGhost(Field *f, int n) { // Diagnostic function
   fclose(fo);
 }
 
-void WriteMerging(Field *f, int n) {
+void WriteMerging(Field *f, int n,int ni) {
   INPUT(f);
 
   FILE *fo;
@@ -302,7 +302,7 @@ void WriteMerging(Field *f, int n) {
   int next, previous;
   int relay;
 
-  sprintf(outname, "%s%s%d.dat", OUTPUTDIR, f->name, n);
+  sprintf(outname, "%s%s%d_%d.dat", OUTPUTDIR, f->name, ni,n);
 
   if (CPU_Rank > 0) { // Force sequential read
     MPI_Recv (&relay, 1, MPI_INT, CPU_Rank-1, 42, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -366,15 +366,15 @@ void WriteBinFile(int n1, int n2, int n3,	\
   fclose(F);
 }
 
-void DumpAllFields (int number) {
+void DumpAllFields (int number, int ni) {
   Field *current;
   current = ListOfGrids;
-  printf ("Dumping at #%d\t", number);
+  printf ("Dumping at #%d, iter #%d\t", number, ni);
   while (current != NULL) {
     if (*(current->owner) == current) {
       if (!CPU_Rank)
 	printf ("%s ", current->name);
-      __WriteField (current, number);
+      __WriteField (current, number, ni);
     }
     current = current->next;
   }
@@ -435,30 +435,30 @@ void WriteOutputsAndDisplay(int type) {
   }
 
   if (WRITEDENSITY)
-    __WriteField(Density, TimeStep);
+    __WriteField(Density, TimeStep,TimeStepIter);
   if (WRITEENERGY)
-    __WriteField(Energy, TimeStep);
+    __WriteField(Energy, TimeStep,TimeStepIter);
 #ifdef MHD //MHD is 3D.
   if (WRITEDIVERGENCE)
-    __WriteField(Divergence,TimeStep);
+    __WriteField(Divergence,TimeStep,TimeStepIter);
   if (WRITEBX)
-    __WriteField(Bx, TimeStep);
+    __WriteField(Bx, TimeStep,TimeStepIter);
   if (WRITEBY)
-    __WriteField(By, TimeStep);
+    __WriteField(By, TimeStep,TimeStepIter);
   if (WRITEBZ)
-    __WriteField(Bz, TimeStep);
+    __WriteField(Bz, TimeStep,TimeStepIter);
 #endif
 #ifdef X
   if (WRITEVX)
-    __WriteField(Vx, TimeStep);
+    __WriteField(Vx, TimeStep,TimeStepIter);
 #endif
 #ifdef Y
   if (WRITEVY)
-    __WriteField(Vy, TimeStep);
+    __WriteField(Vy, TimeStep,TimeStepIter);
 #endif
 #ifdef Z
   if (WRITEVZ)
-    __WriteField(Vz, TimeStep);
+    __WriteField(Vz, TimeStep,TimeStepIter);
 #endif
   
 if (type == ALL){ //We recover the .par variables' value

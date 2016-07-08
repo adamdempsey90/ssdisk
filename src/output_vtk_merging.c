@@ -1,6 +1,6 @@
 #include <fargo3d.h>
 
-void WriteVTKMerging(Field *f, int n) {
+void WriteVTKMerging(Field *f, int n,int ni) {
   int i,j,k,m,p;
   char outname[MAXLINELENGTH];
   real temp;
@@ -8,7 +8,7 @@ void WriteVTKMerging(Field *f, int n) {
   static boolean init = YES;
 
   INPUT (f);
-  sprintf(outname, "%s%s%d.vtk", OUTPUTDIR, f->name, n);
+  sprintf(outname, "%s%s%d_%d.vtk", OUTPUTDIR, f->name, ni,n);
 
   if (CPU_Master) {
     ofile = fopen(outname, "w");

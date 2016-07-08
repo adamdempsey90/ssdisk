@@ -38,6 +38,7 @@ char    NewOutputdir[1024];
 char    DefaultOut[1024];
 char    DeviceFile[1024];
 int     TimeStep = 0;
+int     TimeStepIter = 0;
 int     FullArrayComms = 0;
 int     ContourComms = 0;
 int     DeviceManualSelection = -1;

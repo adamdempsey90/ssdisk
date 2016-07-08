@@ -295,7 +295,7 @@ void init_potential_m(void) {
 #ifdef Z
         }
 #endif
-    WriteField(PotP,0);
+//    WriteField(PotP,0);
     printf("%d\t%d\n",mstart,mend);
     for (m=mstart; m<mend+1; m++) {                
         printf("Adding the m=%d mode\n",m);
@@ -347,8 +347,8 @@ void init_potential_m(void) {
         }
 #endif
 
-        FARGO_SAFE(WriteField(Pot,0));
-        FARGO_SAFE(WriteField(FTPot,0));
+        //FARGO_SAFE(WriteField(Pot,0));
+        //FARGO_SAFE(WriteField(FTPot,0));
 }
 
 
