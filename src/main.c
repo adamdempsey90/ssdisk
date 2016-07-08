@@ -294,7 +294,7 @@ OMEGAFRAME (which is used afterwards to build the initial Vx field. */
 #endif
   for (ni = 0; ni<NITER; ni++) { // Iteration loop
       masterprint ("Start of %d iteration\n", ni);
-      for (i = begin_i; i<=NTOT; i++) { // MAIN LOOP
+      for (i = begin_i; i<=NINTERM; i++) { // MAIN LOOP
     #ifdef TIMER
         if (i==begin_i) {
             begin_timer_time = clock();

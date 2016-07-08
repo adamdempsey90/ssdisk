@@ -41,7 +41,7 @@ Frame			C
 Spacing 		LOG
 ### Output control parameters
 
-Ntot		10000		Total number of time steps
+Ntot		1000		Total number of time steps
 Ninterm	 		20		Time steps between outputs
 DT			6.28	Time step length. 2PI = 1 orbit
 DTITER      0.1
