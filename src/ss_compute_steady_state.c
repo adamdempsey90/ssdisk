@@ -7,9 +7,14 @@ void compute_steady_state(void) {
     int size_x = Nx + 2*NGHX; 
     int size_y = Ny + 2*NGHY; 
     int size_z = Nz + 2*NGHZ; 
+    int pitch = Pitch_cpu;
 
-    real y_min = Y_MIN;
-    real y_max = Y_MAX;
+    real y_min = YMIN;
+    real y_max = YMAX;
+
+
+    real *energy = Energy->field_cpu;
+    real *rho = Density->field_cpu;
 
     real *densityss = DensitySS->field_cpu;
     real *vyss = VySS->field_cpu;
@@ -19,7 +24,7 @@ void compute_steady_state(void) {
     real *dtld = dtLDisk->field_cpu;
 
     real mdot = MDOT;
-    real fac,norm,lamdep,ld;
+    real fac,norm,lamdep,ld,visc;
     real intlam = 0;
     real wkzin = 0;
     real wkzout = 1e99;
@@ -46,7 +51,7 @@ void compute_steady_state(void) {
             if ((ymed(j) >= wkzin) && (ymed(j) <= wkzout)) {
                 lamdep += fac*zone_size_y(j,k)*(drfnu[l2D] + drfd[l2D] + dtld[l2D]);
             }
-                ld = (vxss[l2D] + omf*ymed(j))*ymed(j);                
+                ld = (vxss[l2D] + OMEGAFRAME*ymed(j))*ymed(j);                
                 densityss[l2D] = norm*(1 + lamdep/(ld * mdot)); // lamdep = 0 in inner wkz and constant in outer wkz
                 vyss[l2D] = -mdot/(fac*densityss[l2D]);
             

@@ -11,6 +11,7 @@ void take_average(real dt) {
     int size_x = Nx + 2*NGHX; 
     int size_y = Ny + 2*NGHY; 
     int size_z = Nz + 2*NGHZ; 
+    int pitch = Pitch_cpu;
 
 
 
@@ -23,7 +24,7 @@ void take_average(real dt) {
         for(j=0;j<size_y;j++) {
             drfd[l2D] /= dt;
             drfnu[l2D] /= dt;
-            dtLd[l2D] /= dt;
+            dtld[l2D] /= dt;
         }
     }
 

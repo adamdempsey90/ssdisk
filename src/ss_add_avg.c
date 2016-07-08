@@ -8,6 +8,7 @@ void add_avgs(void) {
     int size_x = Nx + 2*NGHX; 
     int size_y = Ny + 2*NGHY; 
     int size_z = Nz + 2*NGHZ; 
+    int pitch = Pitch_cpu;
 
     real *dens = Density->field_cpu;
     real *vx = Vx->field_cpu;

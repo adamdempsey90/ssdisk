@@ -1,5 +1,5 @@
 ### Run only this parameter file is FARGO3D was build using the setup 'fargo'
-Setup			accretion
+Setup			steadystate
 
 ### Disk parameters
 
@@ -27,7 +27,7 @@ RocheSmoothing 		0.0
 Eccentricity		0.0
 ExcludeHill	        Yes
 IndirectTerm		No
-MassTaper           0
+MassTaper           0.0
 
 ### Mesh parameters
 
@@ -44,7 +44,7 @@ Spacing 		LOG
 Ntot		10000		Total number of time steps
 Ninterm	 		20		Time steps between outputs
 DT			6.28	Time step length. 2PI = 1 orbit
-DTITER      .1
+DTITER      0.1
 NITER       10
 OutputDir  outputs/ss
 #Plotting parameters

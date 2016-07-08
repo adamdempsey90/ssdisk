@@ -293,7 +293,7 @@ OMEGAFRAME (which is used afterwards to build the initial Vx field. */
     real timer_time_elapsed;
 #endif
   for (ni = 0; ni<NITER; ni++) { // Iteration loop
-      masterprintf("Start of %d iteration\n", ni);
+      masterprint ("Start of %d iteration\n", ni);
       for (i = begin_i; i<=NTOT; i++) { // MAIN LOOP
     #ifdef TIMER
         if (i==begin_i) {
@@ -343,10 +343,10 @@ OMEGAFRAME (which is used afterwards to build the initial Vx field. */
     #endif
 
       }
-      masterprintf("End of %d iteration\n", ni);
+      masterprint ("End of %d iteration\n", ni);
       AlgoGas(TRUE);
       compute_steady_state();
-      output_steady_state();
+      output_steady_state(ni);
       add_avgs();
   }
 

@@ -16,12 +16,12 @@ void output_steady_state(int i) {
 
     f = fopen(fname,"w");
 
-    fwrite(&drfnu[NGHY],sizeof(real),Ny,f)
-    fwrite(&drfd[NGHY],sizeof(real),Ny,f)
-    fwrite(&dtld[NGHY],sizeof(real),Ny,f)
-    fwrite(&density_ss[NGHY],sizeof(real),Ny,f)
-    fwrite(&vy_ss[NGHY],sizeof(real),Ny,f)
-    fwrite(&vx_ss[NGHY],sizeof(real),Ny,f)
+    fwrite(&drfnu[NGHY],sizeof(real),Ny,f);
+    fwrite(&drfd[NGHY],sizeof(real),Ny,f);
+    fwrite(&dtld[NGHY],sizeof(real),Ny,f);
+    fwrite(&density_ss[NGHY],sizeof(real),Ny,f);
+    fwrite(&vy_ss[NGHY],sizeof(real),Ny,f);
+    fwrite(&vx_ss[NGHY],sizeof(real),Ny,f);
 
     fclose(f);
 

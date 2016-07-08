@@ -9,6 +9,7 @@ void viscous_flux(real dt) {
     int size_x = Nx + 2*NGHX; 
     int size_y = Ny + 2*NGHY; 
     int size_z = Nz + 2*NGHZ; 
+    int pitch = Pitch_cpu;
     real viscositym, viscosityp,resc, resv,rescp,resvp;
 
     real *rho = Density->field_cpu;
@@ -24,6 +25,7 @@ void viscous_flux(real dt) {
             resv = 0;
             resvp = 0;
             for(i=0;i<size_x;i++) {
+#ifdef ALPHAVISCOSITY
 #ifdef ISOTHERMAL
                 viscositym= ALPHA*.5*(energy[l]*energy[l]+energy[lym]*energy[lym])*sqrt(ymin(j)*ymin(j)*ymin(j)/(G*MSTAR));
                 viscosityp= ALPHA*.5*(energy[lyp]*energy[lyp]+energy[l]*energy[l])*sqrt(ymin(j+1)*ymin(j+1)*ymin(j+1)/(G*MSTAR));
@@ -41,10 +43,10 @@ void viscous_flux(real dt) {
 	            resvp +=(vx[lyp]-vx[l])/(ymed(j+1)-ymed(j))-.5*(vx[lyp]+vx[l])/ymin(j+1); //centered on left, inner vertical edge in z
 
             }
-            resc /= (real)nx;
-            resv /= (real)nx;
-            rescp /= (real)nx;
-            resvp /= (real)nx;
+            resc /= (real)Nx;
+            resv /= (real)Nx;
+            rescp /= (real)Nx;
+            resvp /= (real)Nx;
 	        drfnu[l2D] -= (ymin(j+1)*ymin(j+1)*rescp*resvp -ymin(j)*ymin(j)*resc*resv)/((ymin(j+1)-ymin(j))*ymed(j))*dt;
         }
     }

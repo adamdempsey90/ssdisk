@@ -7,12 +7,14 @@ void avg_flux(real dt) {
     int size_x = Nx + 2*NGHX; 
     int size_y = Ny + 2*NGHY; 
     int size_z = Nz + 2*NGHZ; 
+    int pitch = Pitch_cpu;
 
     real res1,res2;
 
     real dqm, dqp;
 
     real *rho = Density->field_cpu;
+    real *denstar= DensStar->field_cpu;
     real *vx  = Vx_temp->field_cpu;
     real *vy = Vy_temp->field_cpu;
 
@@ -27,11 +29,11 @@ void avg_flux(real dt) {
             res1 = 0;
             res2 = 0;
             for(i=0;i<size_x;i++) {
-                res1 += rho[l]*ymed(j)*(vx[l] + omf*ymed(j));
-                res2 += rho[l]
+                res1 += rho[l]*ymed(j)*(vx[l] + OMEGAFRAME*ymed(j));
+                res2 += rho[l];
             }
-            res1 /= (real)nx;
-            res2 /= (real)nx;
+            res1 /= (real)Nx;
+            res2 /= (real)Nx;
             pibar[l2D] = res1/res2;
         }
     }
@@ -61,9 +63,9 @@ void avg_flux(real dt) {
             for(i=0;i<size_x;i++) {
                 res1 += vy[l];
             }
-            res1 /= (real)nx;
+            res1 /= (real)Nx;
 
-            if (res > 0.0) {
+            if (res1 > 0.0) {
                 pibarstar[l2D] = pibar[l2D-1] + .5*(zone_size_y(j-1,k) - res1*dt)*slopebar[l2D-1];
             }
             else {
@@ -85,7 +87,7 @@ void avg_flux(real dt) {
                 res1 += (vy[l]*denstar[l]*pibarstar[l2D]*SurfY(j,k) - vy[lyp]*denstar[lyp]*pibarstar[l2D+1]*SurfY(j+1,k))*InvVol(j,k);
         
             }
-            res1 /= (real)nx;
+            res1 /= (real)Nx;
 
             drfd[l2D] -= res1*dt;
 
