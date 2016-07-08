@@ -52,13 +52,17 @@ void Fill_Resistivity_Profiles () {
 }
 
 
-void AlgoGas () {
+void AlgoGas (int steadystate) {
   
   real dtemp=0.0;
   real dt=1.0;  
+  real dtloop = steadystate ? DTITER : DT;
   int var=0;
 
-  while(dtemp<DT) { // DT LOOP    
+  if (steadystate) {
+      start_Ld_avg();
+  }
+  while(dtemp<dtloop) { // DT LOOP    
 
     SetupHook1 (); //Setup specific hook. Defaults to empty function.
 
@@ -97,7 +101,7 @@ void AlgoGas () {
     dt = step_time; //cfl works with the 'step_time' global variable.
     /// BEFORE AND AFTER THE CALL TO CFL.
     dtemp+=dt;
-    if(dtemp>DT)  dt = DT - (dtemp-dt); // updating dt
+    if(dtemp>dtloop)  dt = dtloop - (dtemp-dt); // updating dt
 
 #ifdef POTENTIAL
 #ifdef FTPOTENTIAL
@@ -125,6 +129,9 @@ void AlgoGas () {
 #endif
 
 #if (defined(VISCOSITY) || defined(ALPHAVISCOSITY))
+  if (steadystate) {
+      viscous_flux(dt);
+  }
     viscosity(dt);
 #endif
 
@@ -190,7 +197,7 @@ void AlgoGas () {
 #endif
 #endif
 
-    transport(dt);
+    transport(dt,steadystate);
 
     GiveSpecificTime (t_Hydro);
 
@@ -231,158 +238,10 @@ void AlgoGas () {
 
   }
 
-  dtemp = 0.0;
-  if(CPU_Master) printf("%s", "\n");
-
-}
-
-void AlgoGas_ss () {
-  
-  real dtemp=0.0;
-  real dt=1.0;  
-  int var=0;
-
-  //while(dtemp<DT) { // DT LOOP    
-
-    SetupHook1 (); //Setup specific hook. Defaults to empty function.
-
-
-#ifdef ADIABATIC
-    FARGO_SAFE(ComputePressureFieldAd());
-#endif
-    
-#ifdef ISOTHERMAL
-    FARGO_SAFE(ComputePressureFieldIso());
-#endif
-
-#ifdef POLYTROPIC
-    FARGO_SAFE(ComputePressureFieldPoly());
-#endif
-
-// Compute the averages at the beginning of the time-step    
-
-    ComputeAvgs();
-    
-    /// AT THIS STAGE Vx IS THE INITIAL TOTAL VELOCITY IN X
-    
-#ifdef X
-#ifndef STANDARD
-    FARGO_SAFE(ComputeVmed(Vx)); // FARGO algorithm
-#endif
-#endif
-
-    /// NOW THE 2D MESH VxMed CONTAINS THE AZIMUTHAL AVERAGE OF Vx in X
-
-    InitSpecificTime (&t_Hydro, "Eulerian Hydro (no transport) algorithms");
-
-    /// REGARDLESS OF WHETHER WE USE FARGO, Vx IS ALWAYS THE TOTAL VELOCITY IN X
-    FARGO_SAFE(cfl());
-    dt = step_time; //cfl works with the 'step_time' global variable.
-    /// BEFORE AND AFTER THE CALL TO CFL.
-    dtemp+=dt;
-    if(dtemp>DT)  dt = DT - (dtemp-dt); // updating dt
-
-#ifdef POTENTIAL
-#ifdef FTPOTENTIAL
-    if (InitPotential) {
-#endif
-        FARGO_SAFE(compute_potential(dt));
-#ifdef FTPOTENTIAL
-    }
-#endif
-    
-#endif
-
-#if ((defined(SHEARINGSHEET2D) || defined(SHEARINGBOX3D)) && !defined(SHEARINGBC))
-    FARGO_SAFE(NonReflectingBC(Vy));
-#endif
-    
-#ifdef X
-    FARGO_SAFE(SubStep1_x(dt)); 
-#endif
-#ifdef Y
-    FARGO_SAFE(SubStep1_y(dt));
-#endif
-#ifdef Z
-    FARGO_SAFE(SubStep1_z(dt));
-#endif
-
-#if (defined(VISCOSITY) || defined(ALPHAVISCOSITY))
-    addviscosity_cyl_ss(dt);
-    viscosity(dt);// Use function to add to deposited torque
-#endif
-
-#ifndef NOSUBSTEP2
-    FARGO_SAFE(SubStep2_a(dt));
-    FARGO_SAFE(SubStep2_b(dt));  
-    /// NOW: Vx INITIAL X VELOCITY, Vx_temp UPDATED X VELOCITY FROM SOURCE TERMS + ARTIFICIAL VISCOSITY
-
-#endif
-#ifdef ADIABATIC
-    FARGO_SAFE(SubStep3(dt));
-#endif
-
-
-    GiveSpecificTime (t_Hydro);
-    
-        
-    InitSpecificTime (&t_Hydro, "Transport algorithms");
-
-    // V_temp IS USED IN TRANSPORT
-
-
-    FARGO_SAFE(copy_velocities(VTEMP2V));
-    FARGO_SAFE(FillGhosts(PrimitiveVariables()));
-    FARGO_SAFE(copy_velocities(V2VTEMP));
-
-    
-
-
-#ifdef X
-#ifndef STANDARD
-    FARGO_SAFE(ComputeVmed(Vx_temp)); 
-#endif
-#endif
-
-    transport_ss(dt);// Use function to add to deposited torque
-
-    // Finished with time-step
-    ComputeAvg2();      // New averages
-    ComputeLambda(dt);  // Set deposited torque
-
-    GiveSpecificTime (t_Hydro);
-
-    if(CPU_Master) {
-      if (FullArrayComms)
-	printf("%s", "!");
-      else {
-	if (ContourComms)
-	  printf("%s", ":");
-	else
-	  printf("%s", ".");
-      }
-#ifndef NOFLUSH
-      fflush(stdout);
-#endif
-    }
-    if (ForwardOneStep == YES) prs_exit(EXIT_SUCCESS);
-    PhysicalTime+=dt;
-    FullArrayComms = 0;
-    ContourComms = 0;
-
-
-
-#ifdef STOCKHOLM
-#ifdef STOCKHOLMACC
-    FARGO_SAFE(ComputeVymed(Vy));
-    FARGO_SAFE(ComputeRhomed(Density));
-#endif
-    FARGO_SAFE(StockholmBoundary(dt));
-#endif
-
-    FARGO_SAFE(FillGhosts (PrimitiveVariables()));
-
-//  }
+  if (steadystate) {
+      end_Ld_avg();
+      take_average(DTITER);
+  }
 
   dtemp = 0.0;
   if(CPU_Master) printf("%s", "\n");

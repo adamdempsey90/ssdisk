@@ -103,7 +103,7 @@ ex void AdvanceSystemRK5(real);
 
 //algogas.c Prototypes
 ex void FillGhosts (int);
-ex void AlgoGas(void);
+ex void AlgoGas(int);
 ex void SetupHook1_cpu (void);
 
 
@@ -265,7 +265,7 @@ ex void TransportX(Field*, Field*, Field*, real);
 ex void TransportY(Field*, Field*, real); 
 ex void TransportZ(Field*, Field*, real); 
 ex void X_advection (Field*, real);
-ex void transport(real);
+ex void transport(real,int);
 
 //vanleer.c Prototypes
 
@@ -566,6 +566,21 @@ ex void addviscosity_sph_gpu(real);
 
 
 /////////////
+
+// Steady State prototypes
+
+
+ex void start_Ld_avg(void);
+ex void end_Ld_avg(void);
+ex void add_avgs(void);
+ex void avg_flux(real);
+ex void compute_steady_state(void);
+ex void output_steady_state(int);
+ex void take_average(real);
+ex void viscous_flux(real);
+    
+
+
 
 #ifndef __NOPROTO
 

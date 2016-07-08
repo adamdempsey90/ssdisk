@@ -325,7 +325,7 @@ OMEGAFRAME (which is used afterwards to build the initial Vx field. */
           }
         }
         
-        AlgoGas();
+        AlgoGas(FALSE);
         MonitorGlobal (MONITOR2D      | MONITORY | MONITORY_RAW|	\
                MONITORSCALAR  | MONITORZ | MONITORZ_RAW);
         
@@ -343,12 +343,11 @@ OMEGAFRAME (which is used afterwards to build the initial Vx field. */
     #endif
 
       }
-      AlgoGas_ss();
       masterprintf("End of %d iteration\n", ni);
-      compute_avgs();
+      AlgoGas(TRUE);
       compute_steady_state();
-      add_avg();
       output_steady_state();
+      add_avgs();
   }
 
   MPI_Finalize();  

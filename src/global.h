@@ -101,6 +101,17 @@ Field *QL;
 Field *QR;
 Field *LapPPA;
 
+// Fields for Steady State calculations
+Field2D *Slopebar;
+Field2D *Pibar;
+Field2D *Pibarstar;
+Field2D *drFluxDisk;
+Field2D *drFluxVisc;
+Field2D *dtLDisk;
+Field2D *DensitySS;
+Field2D *VySS;
+Field2D *VxSS;
+
 // Below: fields specific to FARGO algorithms
 Field2D *VxMed;
 Field2D *Vxhy;

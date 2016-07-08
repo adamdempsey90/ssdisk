@@ -60,7 +60,7 @@ void X_advection (Field *Vx_t, real dt) {
   TransportX(Density, Qs, Vx_t, dt);
 }
 
-void transport(real dt){
+void transport(real dt, int steadystate){
 
 #ifdef X
   FARGO_SAFE(momenta_x());
@@ -96,6 +96,10 @@ void transport(real dt){
 #ifdef Y
   FARGO_SAFE(VanLeerY_a(Density));
   FARGO_SAFE(VanLeerY_b(dt, Density, DensStar));
+
+  if (steadystate) {
+      avg_flux(dt);
+  }
 
 #ifdef X  
   TransportY(Mpx, Qs, dt);
