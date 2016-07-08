@@ -308,13 +308,15 @@ void AlgoGas_ss () {
 #endif
 
 #if (defined(VISCOSITY) || defined(ALPHAVISCOSITY))
-    viscosity_ss(dt);// Use function to add to deposited torque
+    addviscosity_cyl_ss(dt);
+    viscosity(dt);// Use function to add to deposited torque
 #endif
 
 #ifndef NOSUBSTEP2
     FARGO_SAFE(SubStep2_a(dt));
-    FARGO_SAFE(SubStep2_b_ss(dt)); // Use function to add to deposited torque
+    FARGO_SAFE(SubStep2_b(dt));  
     /// NOW: Vx INITIAL X VELOCITY, Vx_temp UPDATED X VELOCITY FROM SOURCE TERMS + ARTIFICIAL VISCOSITY
+
 #endif
 #ifdef ADIABATIC
     FARGO_SAFE(SubStep3(dt));
