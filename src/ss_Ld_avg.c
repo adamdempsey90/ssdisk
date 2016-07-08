@@ -8,10 +8,11 @@ void start_Ld_avg(void) {
     int size_y = Ny + 2*NGHY; 
     int size_z = Nz + 2*NGHZ; 
     int pitch = Pitch_cpu;
+    
     real res;
-    real *vx = Vx->field_cpu;
-    real *vxss = VxSS->field_cpu;
-    real *dtld = dtLDisk->field_cpu;
+    real* vx = Vx->field_cpu;
+    real* vxss = VxSS->field_cpu;
+    real* dtld = dtLDisk->field_cpu;
 
     for(k=0;k<size_z;k++) {
         for(j=0;j<size_y;j++) {

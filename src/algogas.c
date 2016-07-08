@@ -61,7 +61,9 @@ void AlgoGas (int steadystate) {
 
 
   if (steadystate) {
+      printf("Calc avg 1\n");
       start_Ld_avg();
+      printf("Calc avg 2\n");
   }
   while(dtemp<dtloop) { // DT LOOP    
 

@@ -43,7 +43,7 @@ Spacing 		LOG
 
 Ntot		1		Total number of time steps
 Ninterm	 		1		Time steps between outputs
-DT			6.28	Time step length. 2PI = 1 orbit
+DT			0.1	Time step length. 2PI = 1 orbit
 DTITER      0.1
 NITER       10
 OutputDir  outputs/ss

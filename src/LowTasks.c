@@ -540,6 +540,17 @@ void CreateFields() {
   Eta_profile_xizi = CreateField2D("Eta_xizi", YZ);
   Eta_profile_zi = CreateField2D("Eta_zi", YZ);
 
+  Slopebar       = CreateField2D ("Slopebar", YZ);
+  Pibar       = CreateField2D ("Pibar", YZ);
+  Pibarstar       = CreateField2D ("Pibarstar", YZ);
+  drFluxDisk       = CreateField2D ("drFluxDisk", YZ);
+  drFluxVisc       = CreateField2D ("drFluxVisc", YZ);
+  dtLDisk       = CreateField2D ("dtLDisk", YZ);
+  DensitySS       = CreateField2D ("DensitySS", YZ);
+  VxSS       = CreateField2D ("VxSS", YZ);
+  VySS       = CreateField2D ("VySS", YZ);
+
+
 
   Nshift = CreateFieldInt2D ("Nshift");
   Nxhy   = CreateFieldInt2D ("Nxhy");
