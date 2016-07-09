@@ -18,11 +18,12 @@ void TransportX(Field *Q, Field *Qs, Field *Vx_t, real dt) {
      FARGO_SAFE(UpdateDensityX (dt, Q, Vx_t));
   }
 }
-void TransportY(Field *Q, Field *Qs, real dt) {
+void TransportY(Field *Q, Field *Qs, real dt, int steadystate) {
   if (Q != Density){
     FARGO_SAFE(DivideByRho(Q));
     FARGO_SAFE(VanLeerY_a(DivRho));
     FARGO_SAFE(VanLeerY_b(dt, DivRho, Qs));
+    if (steadystate) avg_flux(dt,Qs);
     FARGO_SAFE(UpdateY (dt, Q, Qs));
   }
   else
@@ -97,26 +98,23 @@ void transport(real dt, int steadystate){
   FARGO_SAFE(VanLeerY_a(Density));
   FARGO_SAFE(VanLeerY_b(dt, Density, DensStar));
 
-  if (steadystate) {
-      avg_flux(dt);
-  }
 
 #ifdef X  
-  TransportY(Mpx, Qs, dt);
-  TransportY(Mmx, Qs, dt);
+  TransportY(Mpx, Qs, dt,steadystate);
+  TransportY(Mmx, Qs, dt,steadystate);
 #endif
 #ifdef Y
-  TransportY(Mpy, Qs, dt);
-  TransportY(Mmy, Qs, dt);
+  TransportY(Mpy, Qs, dt,FALSE);
+  TransportY(Mmy, Qs, dt,FALSE);
 #endif
 #ifdef Z
-  TransportY(Mpz, Qs, dt);
-  TransportY(Mmz, Qs, dt);
+  TransportY(Mpz, Qs, dt,FALSE);
+  TransportY(Mmz, Qs, dt,FALSE);
 #endif
 #ifdef ADIABATIC
-  TransportY(Energy, Qs, dt);
+  TransportY(Energy, Qs, dt,FALSE);
 #endif
-  TransportY(Density, Qs, dt);
+  TransportY(Density, Qs, dt,FALSE);
 #endif // ---- Y
 
 #ifdef X

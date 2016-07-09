@@ -31,22 +31,22 @@ MassTaper           0.0
 
 ### Mesh parameters
 
-Nx  200			Azimuthal number of zones
-Ny     100          	Radial number of zones
+Nx  502			Azimuthal number of zones
+Ny     288          	Radial number of zones
 Xmin			-3.14159265358979323844
 Xmax			3.14159265358979323844
-Ymin			0.4    	Inner boundary radius
-Ymax			2.0		Outer boundary radius
+Ymin			0.1    	Inner boundary radius
+Ymax			3.68		Outer boundary radius
 Frame			C
 Spacing 		LOG
 ### Output control parameters
 
-Ntot		3		Total number of time steps
+Ntot		20		Total number of time steps
 Ninterm	 		1		Time steps between outputs
 DT			6.28	Time step length. 2PI = 1 orbit
-DTITER      0.1
+DTITER      6.28
 NITER       10
-OutputDir  outputs/ss
+OutputDir  outputs/test
 #Plotting parameters
 
 Log			yes

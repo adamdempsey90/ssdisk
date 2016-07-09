@@ -20,7 +20,7 @@ void add_avgs(void) {
 
 
     for(k=0;k<size_z;k++) {
-        for(j=NGHY;j<size_y-NGHY;j++) {
+        for(j=0;j<size_y;j++) {
             for(i=0;i<size_x;i++) {
                 dens[l] = dens_ss[l2D];
                 vx[l] = vx_ss[l2D];
@@ -30,6 +30,11 @@ void add_avgs(void) {
         }
     }
 
+#ifdef GPU
+    Host2Dev3D(Density);
+    Host2Dev3D(Vy);
+    Host2Dev3D(Vx);
+#endif
 
     return;
 }

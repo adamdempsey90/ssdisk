@@ -348,8 +348,8 @@ OMEGAFRAME (which is used afterwards to build the initial Vx field. */
       masterprint ("End of %d iteration\n", ni);
       AlgoGas(TRUE);
       compute_steady_state();
-      output_steady_state(ni);
       add_avgs();
+      output_steady_state(ni);
       clear_averages();
   }
 

@@ -1,6 +1,6 @@
 #include "fargo3d.h"
 
-void output_steady_state(int i) {
+void output_steady_state(int n) {
     FILE *f;
     char fname[256];
 
@@ -11,8 +11,10 @@ void output_steady_state(int i) {
     real *vy_ss = VySS->field_cpu;
     real *vx_ss= VxSS->field_cpu;
 
+    
 
-    sprintf(fname,"%sss_fluxes%d.dat",OUTPUTDIR,i);
+
+    sprintf(fname,"%sss_fluxes%d.dat",OUTPUTDIR,n);
 
     f = fopen(fname,"w");
 
@@ -24,6 +26,18 @@ void output_steady_state(int i) {
     fwrite(&vx_ss[NGHY],sizeof(real),Ny,f);
 
     fclose(f);
+
+    sprintf(fname,"%sfinal%d.dat",OUTPUTDIR,n);
+
+    f = fopen(fname,"w");
+
+    real *dens = Density->field_cpu;
+    fwrite(&dens[NGHY*Nx],sizeof(real),Ny*Nx,f);
+
+    fclose(f);
+
+    DumpAllFields(0,n+1);
+
 
     
 

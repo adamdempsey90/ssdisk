@@ -12,6 +12,12 @@ void viscous_flux(real dt) {
     int pitch = Pitch_cpu;
     real viscositym, viscosityp,resc, resv,rescp,resvp;
 
+#ifdef GPU
+    Dev2Host3D(Density);
+    Dev2Host3D(Vx);
+    Dev2Host3D(Vy);
+#endif
+
     real *rho = Density->field_cpu;
     real *vx  = Vx->field_cpu;
     real *energy = Energy->field_cpu;

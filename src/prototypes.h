@@ -262,7 +262,7 @@ ex void test3d(void);
 //transport Prototypes
 ex void VanLeerX(Field*, Field*, Field*, real);
 ex void TransportX(Field*, Field*, Field*, real); 
-ex void TransportY(Field*, Field*, real); 
+ex void TransportY(Field*, Field*, real,int); 
 ex void TransportZ(Field*, Field*, real); 
 ex void X_advection (Field*, real);
 ex void transport(real,int);
@@ -573,7 +573,7 @@ ex void addviscosity_sph_gpu(real);
 ex void start_Ld_avg(void);
 ex void end_Ld_avg(void);
 ex void add_avgs(void);
-ex void avg_flux(real);
+ex void avg_flux(real,Field *);
 ex void compute_steady_state(void);
 ex void output_steady_state(int);
 ex void take_average(real);
