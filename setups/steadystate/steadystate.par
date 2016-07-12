@@ -12,6 +12,7 @@ Mdot0                0.0000236
 Mdot                 0.0000236
 CPI                    3.141592653589793238462643383279502884
 NOISE               0.0
+SIGMAMIN             0.0000000001
 SIGMAIN             0.00000001
 SIGMAOUT            0.00001
 LAMBDABC             No
@@ -19,6 +20,7 @@ MSTART          2
 MEND            2
 WKZIN           0.05
 WKZOUT          0.2
+EXCLUDEWKZ      Yes
 ### Planet parameters
 
 PlanetConfig		planets/jupiter.cfg
@@ -46,6 +48,7 @@ Ninterm	 		20		Time steps between outputs
 DT			6.28	Time step length. 2PI = 1 orbit
 DTITER      0.1
 NITER       10
+NTOTINIT       50
 OutputDir  outputs/ss
 #Plotting parameters
 

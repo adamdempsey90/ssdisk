@@ -5,6 +5,7 @@
 void InitVariables() {
   init_var("CPI", (char*)&CPI, REAL, NO, "3.141592653589793238462643383279502884");
   init_var("WKZOUT", (char*)&WKZOUT, REAL, NO, "0.2");
+  init_var("SIGMAMIN", (char*)&SIGMAMIN, REAL, NO, "0.0000000001");
   init_var("SIGMAIN", (char*)&SIGMAIN, REAL, NO, "0.00000001");
   init_var("ECCENTRICITY", (char*)&ECCENTRICITY, REAL, NO, "0.0");
   init_var("DTITER", (char*)&DTITER, REAL, NO, "0.1");
@@ -33,15 +34,17 @@ void InitVariables() {
   init_var("NY", (char*)&NY, INT, NO, "100");
   init_var("MEND", (char*)&MEND, INT, NO, "2");
   init_var("MSTART", (char*)&MSTART, INT, NO, "2");
+  init_var("NTOTINIT", (char*)&NTOTINIT, INT, NO, "50");
   init_var("PLANETCONFIG", (char*)&PLANETCONFIG, STRING, NO, "planets/jupiter.cfg");
   init_var("SETUP", (char*)&SETUP, STRING, NO, "steadystate");
   init_var("SPACING", (char*)&SPACING, STRING, NO, "LOG");
   init_var("FRAME", (char*)&FRAME, STRING, NO, "C");
   init_var("OUTPUTDIR", (char*)&OUTPUTDIR, STRING, NO, "outputs/ss");
   init_var("LAMBDABC", (char*)&LAMBDABC, BOOL, NO, "0");
-  init_var("INDIRECTTERM", (char*)&INDIRECTTERM, BOOL, NO, "0");
   init_var("EXCLUDEHILL", (char*)&EXCLUDEHILL, BOOL, NO, "1");
+  init_var("EXCLUDEWKZ", (char*)&EXCLUDEWKZ, BOOL, NO, "1");
   init_var("LOG", (char*)&LOG, BOOL, NO, "1");
+  init_var("INDIRECTTERM", (char*)&INDIRECTTERM, BOOL, NO, "0");
   init_var("ZMAX", (char*)&ZMAX, REAL, NO, "1.0");
   init_var("SEMIMAJORAXIS", (char*)&SEMIMAJORAXIS, REAL, NO, "0.0");
   init_var("ZMIN", (char*)&ZMIN, REAL, NO, "0.0");

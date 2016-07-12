@@ -24,7 +24,7 @@ void compute_steady_state(void) {
     real *dtld = dtLDisk->field_cpu;
 
     real mdot = MDOT;
-    real fac,norm,ld,visc;
+    real fac,norm,ld,visc,dl;
     real intlam = 0;
     real wkzin = 0;
     real wkzout = 1e99;
@@ -48,11 +48,18 @@ void compute_steady_state(void) {
             norm = mdot/(3*M_PI*visc);
             fac = 2*M_PI*ymed(j);
             ld = (vxss[l2D] + OMEGAFRAME*ymed(j))*ymed(j);                
-            densityss[l2D] = norm*(1 + intlam/(ld * mdot)); // lamdep = 0 in inner wkz and constant in outer wkz
+            densityss[l2D] = norm*fmax(SIGMAMIN,1 + intlam/(ld * mdot)); // Put a floor on sigma // Put a floor on sigma // Put a floor on sigma // Put a floor on sigma 
             vyss[l2D] = -mdot/(fac*densityss[l2D]);
             // Exclude wavekilling zones
-            if ((ymed(j) >= wkzin) && (ymed(j) <= wkzout)) {
-                intlam += fac*zone_size_y(j,k)*(drfnu[l2D] + drfd[l2D] + dtld[l2D]);
+            
+            dl = fac*zone_size_y(j,k)*(drfnu[l2D] + drfd[l2D] + dtld[l2D]);
+            if (EXCLUDEWKZ) {
+                if ((ymed(j) >= wkzin) && (ymed(j) <= wkzout)) {
+                    intlam += dl; 
+                }
+            }
+            else {
+                intlam += dl;
             }
             
         }

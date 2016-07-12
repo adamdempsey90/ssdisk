@@ -56,7 +56,8 @@ void AlgoGas (int steadystate) {
   
   real dtemp=0.0;
   real dt=1.0;  
-  real dtloop = steadystate ? DTITER : DT;
+  //real dtloop = steadystate ? DTITER : DT;
+  real dtloop = steadystate ? .003 : DT;
   int var=0;
 
 
@@ -203,6 +204,7 @@ void AlgoGas (int steadystate) {
 
     GiveSpecificTime (t_Hydro);
 
+/*
     if(CPU_Master) {
       if (FullArrayComms)
 	printf("%s", "!");
@@ -212,10 +214,12 @@ void AlgoGas (int steadystate) {
 	else
 	  printf("%s", ".");
       }
+
 #ifndef NOFLUSH
       fflush(stdout);
 #endif
     }
+*/
     if (ForwardOneStep == YES) prs_exit(EXIT_SUCCESS);
     PhysicalTime+=dt;
     FullArrayComms = 0;
@@ -228,6 +232,7 @@ void AlgoGas (int steadystate) {
 #endif
 
 
+    if (!steadystate) {
 #ifdef STOCKHOLM
 #ifdef STOCKHOLMACC
     FARGO_SAFE(ComputeVymed(Vy));
@@ -235,14 +240,30 @@ void AlgoGas (int steadystate) {
 #endif
     FARGO_SAFE(StockholmBoundary(dt));
 #endif
+    }
 
     FARGO_SAFE(FillGhosts (PrimitiveVariables()));
 
   }
 
+    if(CPU_Master) {
+      if (FullArrayComms)
+	printf("%s", "!");
+      else {
+	if (ContourComms)
+	  printf("%s", ":");
+	else
+	  printf("%s", ".");
+      }
+
+#ifndef NOFLUSH
+      fflush(stdout);
+#endif
+    }
   if (steadystate) {
       end_Ld_avg();
-      take_average(DTITER);
+      //take_average(DTITER);
+      take_average(dt);
   }
 
   dtemp = 0.0;

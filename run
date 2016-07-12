@@ -1,12 +1,11 @@
 #!/bin/bash
 ## This line is a comment, the following lines are for Moab
-#MOAB -l nodes=1:ppn=20
-#MOAB -l walltime=168:00:00
-#MOAB -N run
+#MOAB -l nodes=1:ppn=1:gpus=1
+#MOAB -l walltime=4:00:00
+#MOAB -N sim1
 #MOAB -j oe
-
-#MSUB -l advres=b1002
-#MSUB -A b1002
+#MSUB -m abe
+#MSUB -A b1011
 
 ##### These are shell commands. Note that all MSUB commands come first.
 
@@ -16,4 +15,8 @@ cd $PBS_O_WORKDIR
 ulimit -s unlimited
 
 
-mpirun -np 20 fargo3d2 in/accretion.par >> f.out
+unset CUDA_VISIBLE_DEVICES
+nvidia-smi -L
+nvidia-smi
+
+./fargo3d  -o "dt=62.8,ninterm=1,ntot=2,niter=10,ntotinit=55,alpha=0.01,outputdir=outputs/test4/" in/steadystate.par >> fS1.out

@@ -15,7 +15,7 @@ real dtemp = 0.0;
 int main(int argc, char *argv[]) {
   
   int   i, OutputNumber = 0, d;
-  int   ni;
+  int   ni, ntot;
   char  ParameterFile[MAXLINELENGTH];
   if (argc == 1) PrintUsage (argv[0]);
   strcpy (ParameterFile, "");
@@ -292,9 +292,12 @@ OMEGAFRAME (which is used afterwards to build the initial Vx field. */
     clock_t begin_timer_time, end_timer_time;
     real timer_time_elapsed;
 #endif
+  ntot = NTOTINIT;
   for (ni = 0; ni<NITER; ni++) { // Iteration loop
+      ntot = (ni == 0) ? NTOTINIT : NTOT; 
       masterprint ("Start of %d iteration\n", ni);
-      for (i = begin_i; i<=NTOT; i++) { // MAIN LOOP
+      masterprint ("Evolving waves for %d DT (DT = %lg)\n", ntot,DT);
+      for (i = begin_i; i<=ntot; i++) { // MAIN LOOP
     #ifdef TIMER
         if (i==begin_i) {
             begin_timer_time = clock();
@@ -347,6 +350,7 @@ OMEGAFRAME (which is used afterwards to build the initial Vx field. */
       }
       masterprint ("End of %d iteration\n", ni);
       AlgoGas(TRUE);
+      masterprint ("Computing steady state\n");
       compute_steady_state();
       add_avgs();
       output_steady_state(ni);
